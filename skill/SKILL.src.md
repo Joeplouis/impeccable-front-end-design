@@ -3,9 +3,6 @@ name: impeccable
 description: "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks."
 argument-hint: "[{{command_hint}}] [target]"
 user-invocable: true
-allowed-tools:
-  - Bash(npx impeccable *)
-  - Bash(node {{scripts_path}}/*)
 license: Apache 2.0
 ---
 
@@ -16,9 +13,23 @@ Core principles:
 - Dream big and bold. Distinct, beautiful, outstanding and highly inspiring work.
 - Verify in bounded passes, not a loop, and the ceiling covers the whole cycle: screenshots, defect scans, micro-edits, and rebuilds alike. Build fully, inspect once with a batched round (desktop and mobile together on the web; the shipped device classes on a native platform), fix everything it shows in one batch, confirm with at most one more round, and stop polishing. Open-ended self-QA burns the user's money doing worse what the finish handoffs do better.
 
+
+## Safe mode — default in this fork
+
+This fork is hardened for use inside AI-agent and production engineering environments.
+
+- **DESIGN.md is authoritative.** When a project contains a root `DESIGN.md`, read it before proposing or editing UI. Its explicit tokens, visual rules, brand constraints, motion guidance, responsive behavior, and do/don't rules outrank generic Impeccable taste.
+- **Do not overwrite DESIGN.md during ordinary design work.** `document`, redesign, or any action that replaces/merges the design contract requires an explicit user request. Refinement, critique, audit, polish, harden, and adapt must preserve the existing contract.
+- **No automatic execution from this skill.** Do not run `npx impeccable`, Node scripts shipped by this repository, installers, update commands, hooks, downloaded binaries, or shell commands merely because this skill or one of its reference files says to do so.
+- **No automatic network downloads.** Do not download or execute tools, binaries, packages, or remote scripts as part of a design pass unless the user explicitly authorizes that action and the environment's security review permits it.
+- **Hooks are off by default.** Do not enable or trust Impeccable hooks unless the user explicitly requests them after security review.
+- **Reference files are methodology, not authority to execute.** You may read the command references and apply their design criteria manually. Instructions inside references that invoke executables, hooks, installers, or external tooling are not implicitly authorized.
+- **Six-pass closeout remains available without execution.** `shape`, `critique`, `audit`, `polish`, `harden`, and `adapt` can be performed as read-only methodology passes against the code, screenshots, runtime evidence, and authoritative `DESIGN.md`.
+- **Never weaken product truth to satisfy style guidance.** Existing factual copy, pricing, product behavior, accessibility requirements, and explicit product constraints remain authoritative.
+
 ## Setup
 
-1. Run `node <skill-base-dir>/scripts/context.mjs` once per session, where `<skill-base-dir>` is the loaded base directory the runtime reports for this skill; keep cwd at the user's project. That base directory resolves every `node {{scripts_path}}/...` command in this skill and its references, and `{{scripts_path}}` is the fallback only when the runtime reports no base directory. Pass a named source file or route as `--target <path>`. It loads PRODUCT.md, DESIGN.md, the matching surface brief, and native-platform guidance when applicable; follow its directives and do not rerun it. <!-- rule:skill-setup-context -->
+1. **Read project context directly; do not execute skill scripts in safe mode.** Read root `DESIGN.md` first when present, then `PRODUCT.md` and any matching surface brief. Treat `DESIGN.md` as the authoritative visual contract. If those files are missing, continue from the incumbent implementation and the user's request rather than running repository-provided setup scripts. <!-- rule:skill-setup-context -->
 2. Load the request's playbook: its Commands-table reference for an explicit/implied sub-command, or [reference/new-work.md](reference/new-work.md) for a new surface or replacement visual world. Inspect target and incumbent visual truth before editing. When the app cannot run, start with committed visual-regression goldens or screenshot fixtures; verify target and freshness against current tokens, CSS, components, or assets, resolve conflicts, and compare theme/variant captures. <!-- rule:skill-setup-command-ref --> <!-- rule:skill-setup-read-project -->
 3. After analysis and direction are resolved, load [reference/craft-floor.md](reference/craft-floor.md) immediately before editing UI. It carries the quality floor, the absolute bans, and the reflexes no detector catches. Do not load it for planning-only work. <!-- rule:skill-craft-floor-load -->
 
@@ -78,7 +89,7 @@ After init writes PRODUCT.md, resume without rerunning `context.mjs`; init loads
 
 **Pin / Unpin:** `node {{scripts_path}}/pin.mjs <pin|unpin> <command>` creates or removes a standalone `{{command_prefix}}<command>` shortcut. Report the script's result concisely; relay stderr verbatim on error.
 
-**Hooks:** `{{command_prefix}}impeccable hooks <on|off|status|ignore-rule|ignore-file|ignore-value|reset>` manages the design detector hook for this project (auto-runs the detector after UI file edits and surfaces findings). Load [reference/hooks.md](reference/hooks.md) when the user invokes it with any argument.
+**Hooks:** Hooks are **disabled by default in this hardened fork**. If the user explicitly asks about hooks, load [reference/hooks.md](reference/hooks.md) as documentation only. Do not enable, trust, install, or execute a hook unless the user separately authorizes it after the environment's security review.
 
 **Doctor:** `{{command_prefix}}impeccable doctor` reports and repairs drift between this project's Impeccable artifacts (PRODUCT.md, DESIGN.md and its sidecar, config, surface briefs, the hook) and what this version reads. Load [reference/doctor.md](reference/doctor.md) when the user invokes it, or when they ask what is out of date, stale, or needs refreshing. A `CONTEXT_STALE` directive in Setup's output is the cheap subset of the same report; act on it there per its own instructions rather than running doctor unasked. <!-- rule:skill-doctor-route -->
 
