@@ -1,5 +1,9 @@
 # Impeccable
 
+> **Hardened fork note:** This fork defaults to a DESIGN.md-first safe mode for AI-agent/production use. It does not authorize automatic installers, hooks, repository scripts, downloads, or external binary execution. See [SECURITY_HARDENING.md](SECURITY_HARDENING.md).
+>
+> When a project already has `DESIGN.md`, that file is the authoritative visual contract. Impeccable is used around it for shape, critique, audit, polish, harden, and adapt review passes.
+
 Design guidance for AI coding agents. 1 skill, 23 commands, live browser iteration, and 61 deterministic detector rules for AI-generated frontend design.
 
 > **Quick start:** From your project root, run `npx impeccable install`, then run `/impeccable init` inside your AI coding tool. Full docs: [impeccable.style](https://impeccable.style).
